@@ -1,0 +1,9 @@
+Q. One line code to find all files having specific name in a folder (recursively) containing a given string
+find . -name file_name | xargs grep -il sftp  #xargs is used to specify multiple arguments to a command, -i for case-insensitive match, -l to print filename only
+find . -name file_name -exec grep -il sftp {} \; #exec will take one input at a time from find command and substitute in {}. Also \; is needed to terminate exec command.
+
+Q. One line code to validate syntax of all xml files in a folder 
+find -name '*.xml' -exec sh -c 'xmllint --noout $1 2> /dev/null;if [ $? != 0 ];then echo "Failed $1";fi' _ {} \; # sh specifies that run shell script and when -c is used it says read that script from following string. 
+find -name '*.xml' -exec sh -c 'xmllint --noout $1 2> /dev/null;if [ $? != 0 ];then echo "Failed $1";fi' '' {} \;
+find -name '*.xml' -exec sh -c 'xmllint --noout $0 2> /dev/null;if [ $? != 0 ];then echo "Failed $0";fi' {} \;
+
