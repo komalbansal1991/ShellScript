@@ -1,9 +1,28 @@
-Q. One line code to find all files having specific name in a folder (recursively) containing a given string
+# One line code to find all files having specific name in a folder (recursively) containing a given string
 find . -name file_name | xargs grep -il sftp  #xargs is used to specify multiple arguments to a command, -i for case-insensitive match, -l to print filename only
 find . -name file_name -exec grep -il sftp {} \; #exec will take one input at a time from find command and substitute in {}. Also \; is needed to terminate exec command.
 
-Q. One line code to validate syntax of all xml files in a folder 
+# One line code to validate syntax of all xml files in a folder 
 find -name '*.xml' -exec sh -c 'xmllint --noout $1 2> /dev/null;if [ $? != 0 ];then echo "Failed $1";fi' _ {} \; # sh specifies that run shell script and when -c is used it says read that script from following string. 
 find -name '*.xml' -exec sh -c 'xmllint --noout $1 2> /dev/null;if [ $? != 0 ];then echo "Failed $1";fi' '' {} \;
 find -name '*.xml' -exec sh -c 'xmllint --noout $0 2> /dev/null;if [ $? != 0 ];then echo "Failed $0";fi' {} \;
 
+# How to write in file without having the need to use escape letters for formatting.
+cat > filename << EOF # when EOF is encountered cat will stop reading from stdin.
+text that you want to write in any format.
+EOF
+
+#print number of entries matching with given string in a file.
+grep -c pattern filename
+
+#read input from user and print sequence till that number using for loop.
+#read inp;for i in {1..$inp};do echo $i;done   [this will not work. variable substitution in this kind of for loop is not supported.
+read inp
+for (( i=1 ; i<inp; i++ ))
+do
+echo $i
+done
+
+
+#print the value stored in a particular tag in xml
+echo "cat //Entry_tag_name[$index]/tag_name/text()" | xmllint --shell  xmlfilename | grep -v -- '-|>' # Here cat is a command to xmllint. xmllint reads the entire xml file and creates an array of all entries in it. Then they can be accessed by using xpath queries. Here we needed to grep because output was containing strings like "/>--  ". So in order to suppress these things we use -v, that is basically inverted match. If some line matches with given pattern then don't show it. -- is needed to suppress the interpretation of anything starting with hyphen as option by getopts command. 
