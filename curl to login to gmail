@@ -1,0 +1,3 @@
+curl 'https://accounts.google.com/ServiceLogin?service=mail&passive=true&rm=false&continue=https://mail.google.com/mail/&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1#identifier' --verbose --user-agent 'Firefox/3.5' --data "Email=ur_id" --data "Passwd=ur_password" --cookie-jar  cookie.txt -o 1o.txt
+
+curl 'https://accounts.google.com/ServiceLogin?service=mail&passive=true&rm=false&continue=https://mail.google.com/mail/&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1#identifier' --verbose --user-agent 'Firefox/3.5' --cookie cookie.txt --cookie-jar cookie.txt -o 2o.txt
