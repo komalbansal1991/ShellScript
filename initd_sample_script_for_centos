@@ -1,4 +1,4 @@
-#
+#use "chkconfig --add script_name" to add it to rc[n].d directory.
 # chkconfig: 2345 95 05
 # description: MySystem server daemon
 #
@@ -8,7 +8,7 @@
 # pidfile: /var/run/MySystem.pid
 
 # source function library
-#. /etc/rc.d/init.d/functions
+. /etc/rc.d/init.d/functions
 
 #sudo chkconfig --add MySystem
 RETVAL=0
@@ -73,3 +73,8 @@ case "$1" in
 esac
 exit $RETVAL
 
+
+#after creating this script create a conf file in /etc/init directory with following contents
+#start on stopped rc RUNLEVEL [2345]
+#respawn
+#exec /etc/init.d/script_name start
