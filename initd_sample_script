@@ -1,0 +1,75 @@
+#
+# chkconfig: 2345 95 05
+# description: MySystem server daemon
+#
+# processname: MySystem
+# config: /etc/MySystem/mySystem.conf
+# config: /etc/sysconfig/mySystem
+# pidfile: /var/run/MySystem.pid
+
+# source function library
+#. /etc/rc.d/init.d/functions
+
+#sudo chkconfig --add MySystem
+RETVAL=0
+prog="MySystem"
+
+start() {
+        echo -n $"Starting $prog:"
+        sleep 1000
+        RETVAL=$?
+        [ "$RETVAL" = 0 ] && sudo touch /var/lock/subsys/$prog
+        echo
+}
+
+stop() {
+        echo -n $"Stopping $prog:"
+        sudo pkill -9 $prog
+        #pids=`ps -C $prog -o pid=`
+        #echo "hey"$pids "hi"
+        #kill -KILL $pids
+        RETVAL=$?
+        [ "$RETVAL" = 0 ] && sudo rm -f /var/lock/subsys/$prog
+        #sudo chkconfig --del MySystem
+        #echo
+}
+
+reload() {
+        echo -n $"Reloading $prog:"
+        sudo pkill $prog
+        RETVAL=$?
+        echo
+}
+
+case "$1" in
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+                restart)
+                stop
+                start
+                ;;
+        reload)
+                reload
+                ;;
+        condrestart)
+                if [ -f /var/lock/subsys/$prog ] ; then
+                        stop
+                        # avoid race
+                        sleep 3
+                        start
+                fi
+                ;;
+        status)
+                status $prog
+                RETVAL=$?
+                ;;
+        *)
+                echo $"Usage: $0 {start|stop|restart|reload|condrestart|status}"
+                RETVAL=1
+esac
+exit $RETVAL
+
