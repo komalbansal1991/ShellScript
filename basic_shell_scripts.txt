@@ -26,3 +26,6 @@ done
 
 #print the value stored in a particular tag in xml
 echo "cat //Entry_tag_name[$index]/tag_name/text()" | xmllint --shell  xmlfilename | grep -v -- '-|>' # Here cat is a command to xmllint. xmllint reads the entire xml file and creates an array of all entries in it. Then they can be accessed by using xpath queries. Here we needed to grep because output was containing strings like "/>--  ". So in order to suppress these things we use -v, that is basically inverted match. If some line matches with given pattern then don't show it. -- is needed to suppress the interpretation of anything starting with hyphen as option by getopts command. 
+
+#create folder for movies in a given folder and copy them in their respective folders.
+ls -I *.srt <folder-path> | xargs -n1 -i%f echo "%f" |sed "s/\(.*\)\..*$/\1/g" | xargs -n1 -i%f sh -c 'mkdir "%f"; mv "%f".* "%f"'
